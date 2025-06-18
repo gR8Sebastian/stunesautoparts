@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AutoParts Pro - Your one-stop shop for premium car spare parts. Find compatible parts for your vehicle today!">
-  <title>Stunes Autoparts | Premium Car Parts & Accessories</title>
+  <meta name="description" content="Stunes AutoParts - Your one-stop shop for premium car spare parts. Find compatible parts for your vehicle today!">
+  <title>Stunes AutoParts | Premium Car Parts & Accessories</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inter:wght@400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600&display=swap');
     
     :root {
       --primary: #1a56db;
@@ -196,6 +196,157 @@
     .stats-card:hover {
       transform: translateY(-5px);
     }
+    
+    /* Pulse animation for featured products */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+    
+    .featured-title {
+      animation: pulse 3s ease-in-out infinite;
+    }
+    
+    /* Hover animation for category cards */
+    .category-card {
+      transition: all 0.3s ease;
+    }
+    
+    .category-card:hover {
+      background-color: #1a56db;
+      color: white;
+      transform: translateY(-5px);
+    }
+    
+    .category-card:hover .part-icon {
+      background-color: white;
+      color: #1a56db;
+    }
+    
+    .category-card:hover p {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    /* Cart notification */
+    .cart-notification {
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      background-color: #10b981;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+      transform: translateX(200%);
+      transition: transform 0.5s ease;
+    }
+    
+    .cart-notification.show {
+      transform: translateX(0);
+    }
+    
+    /* FIX: Ensure suggestions appear above stats cards */
+    #suggestions {
+      z-index: 1000; /* Higher than stats cards */
+    }
+    
+    .search-container {
+      position: relative;
+      z-index: 50; /* Higher than surrounding elements */
+    }
+    
+    /* Cart modal styling */
+    .cart-modal {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 380px;
+      height: 100vh;
+      background-color: white;
+      box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+      z-index: 2000;
+      transition: right 0.4s ease;
+      overflow-y: auto;
+    }
+    
+    .cart-modal.open {
+      right: 0;
+    }
+    
+    .cart-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1500;
+      display: none;
+    }
+    
+    .cart-overlay.active {
+      display: block;
+    }
+    
+    .cart-item {
+      display: flex;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 15px 0;
+    }
+    
+    .cart-item-img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      margin-right: 15px;
+      border-radius: 8px;
+    }
+    
+    .cart-quantity {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+    
+    .cart-quantity button {
+      width: 30px;
+      height: 30px;
+      background-color: #e5e7eb;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .cart-quantity input {
+      width: 40px;
+      text-align: center;
+      margin: 0 5px;
+    }
+    
+    .remove-item {
+      color: #ef4444;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+    
+    /* Currency display */
+    .price-ksh {
+      display: flex;
+      align-items: flex-start;
+    }
+    
+    .price-ksh span:first-child {
+      font-size: 0.8rem;
+      margin-right: 2px;
+      margin-top: 4px;
+    }
+    
+    .price-ksh span:last-child {
+      font-weight: bold;
+      font-size: 1.25rem;
+    }
   </style>
 </head>
 <body class="bg-gray-50">
@@ -203,7 +354,7 @@
   <header class="fixed top-0 left-0 w-full bg-white shadow-md z-50">
     <div class="container mx-auto flex justify-between items-center py-4 px-6">
       <div class="logo text-2xl font-bold">
-        <span class="text-blue-700">Stunes  Auto</span><span class="text-amber-500">Parts</span> <span class="text-gray-800"></span>
+        <span class="text-blue-700">Stunes </span><span class="text-amber-500">AutoParts</span>
       </div>
       <nav class="hidden md:flex space-x-8">
         <a href="#home" class="text-gray-700 hover:text-blue-600 font-medium transition">Home</a>
@@ -218,8 +369,8 @@
           <i class="fas fa-search text-gray-600 text-lg cursor-pointer hover:text-blue-600"></i>
         </div>
         <div class="relative">
-          <i class="fas fa-shopping-cart text-gray-600 text-lg cursor-pointer hover:text-blue-600"></i>
-          <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+          <i class="fas fa-shopping-cart text-gray-600 text-lg cursor-pointer hover:text-blue-600" id="cart-icon"></i>
+          <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center" id="cart-count">0</span>
         </div>
         <div>
           <i class="fas fa-user text-gray-600 text-lg cursor-pointer hover:text-blue-600"></i>
@@ -238,6 +389,45 @@
     </div>
   </header>
 
+  <!-- Cart Modal -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <div class="cart-modal" id="cart-modal">
+    <div class="p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold">Your Cart</h3>
+        <button id="close-cart" class="text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="cart-items" id="cart-items">
+        <!-- Cart items will be added here dynamically -->
+        <div class="text-center py-10 text-gray-500" id="empty-cart-message">
+          <i class="fas fa-shopping-cart text-4xl mb-4"></i>
+          <p>Your cart is empty</p>
+        </div>
+      </div>
+      
+      <div class="mt-6 border-t pt-6 hidden" id="cart-summary">
+        <div class="flex justify-between mb-4">
+          <span class="font-semibold">Subtotal:</span>
+          <span class="font-bold" id="cart-subtotal">Ksh 0.00</span>
+        </div>
+        <div class="flex justify-between mb-4">
+          <span class="font-semibold">Shipping:</span>
+          <span class="font-bold">Ksh 500.00</span>
+        </div>
+        <div class="flex justify-between mb-6 text-xl">
+          <span class="font-semibold">Total:</span>
+          <span class="font-bold" id="cart-total">Ksh 0.00</span>
+        </div>
+        <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition">
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Hero Section -->
   <section id="home" class="pt-24 pb-20 hero-bg text-white">
     <div class="container mx-auto px-4">
@@ -245,15 +435,17 @@
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 fade-in" style="font-family: 'Montserrat', sans-serif;">Premium Auto Parts <br><span class="text-amber-400">For Your Vehicle</span></h1>
         <p class="text-xl mb-8 text-gray-200 fade-in">Find genuine parts and accessories for any make and model. Fast shipping and expert support.</p>
         
-        <div class="w-full flex justify-center fade-in">
+        <!-- Fixed search container with higher z-index -->
+        <div class="w-full flex justify-center fade-in search-container">
           <div class="relative w-full max-w-2xl">
             <input type="text" id="search" placeholder="Search for parts, brands, models..." class="w-full p-4 rounded-lg bg-white bg-opacity-20 backdrop-blur-sm border border-gray-300 text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-400 shadow-lg font-medium" style="font-family: 'Inter', sans-serif;">
-            <button class="absolute right-2 top-2 bg-amber-500 hover:bg-amber-600 text-white p-2 px-4 rounded-lg transition font-bold" style="font-family: 'Montserrat', sans-serif;">Search</button>
-            <div id="suggestions" class="absolute left-0 w-full mt-1 bg-white text-gray-800 rounded-lg shadow-xl max-h-60 overflow-auto z-10"></div>
+            <button id="search-btn" class="absolute right-2 top-2 bg-amber-500 hover:bg-amber-600 text-white p-2 px-4 rounded-lg transition font-bold" style="font-family: 'Montserrat', sans-serif;">Search</button>
+            <div id="suggestions" class="absolute left-0 w-full mt-1 bg-white text-gray-800 rounded-lg shadow-xl max-h-60 overflow-auto z-10 hidden"></div>
           </div>
         </div>
         
-        <div class="mt-10 flex flex-wrap gap-4 fade-in justify-center">
+        <!-- Stats cards moved down to prevent overlap -->
+        <div class="mt-16 flex flex-wrap gap-4 fade-in justify-center">
           <div class="stats-card">
             <div class="text-3xl font-bold" style="font-family: 'Montserrat', sans-serif;">15K+</div>
             <div class="text-gray-200">Parts in Stock</div>
@@ -310,7 +502,7 @@
             </select>
           </div>
         </div>
-        <button class="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition transform hover:-translate-y-1">Find Compatible Parts</button>
+        <button id="find-parts-btn" class="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition transform hover:-translate-y-1">Find Compatible Parts</button>
       </div>
     </div>
   </section>
@@ -324,7 +516,7 @@
       </div>
       
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 fade-in">
-        <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="category-card bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
           <div class="part-icon mx-auto">
             <i class="fas fa-oil-can"></i>
           </div>
@@ -332,7 +524,7 @@
           <p class="text-gray-600 text-sm">Filters, oil, belts, pumps</p>
         </div>
         
-        <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="category-card bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
           <div class="part-icon mx-auto">
             <i class="fas fa-car-battery"></i>
           </div>
@@ -340,7 +532,7 @@
           <p class="text-gray-600 text-sm">Batteries, alternators, starters</p>
         </div>
         
-        <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="category-card bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
           <div class="part-icon mx-auto">
             <i class="fas fa-tools"></i>
           </div>
@@ -348,7 +540,7 @@
           <p class="text-gray-600 text-sm">Pads, rotors, calipers</p>
         </div>
         
-        <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="category-card bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
           <div class="part-icon mx-auto">
             <i class="fas fa-cogs"></i>
           </div>
@@ -356,7 +548,7 @@
           <p class="text-gray-600 text-sm">Clutches, fluids, parts</p>
         </div>
         
-        <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="category-card bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
           <div class="part-icon mx-auto">
             <i class="fas fa-fan"></i>
           </div>
@@ -364,7 +556,7 @@
           <p class="text-gray-600 text-sm">Radiators, thermostats, hoses</p>
         </div>
         
-        <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="category-card bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
           <div class="part-icon mx-auto">
             <i class="fas fa-car"></i>
           </div>
@@ -372,7 +564,7 @@
           <p class="text-gray-600 text-sm">Shocks, struts, bushings</p>
         </div>
         
-        <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="category-card bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
           <div class="part-icon mx-auto">
             <i class="fas fa-exclamation-triangle"></i>
           </div>
@@ -380,7 +572,7 @@
           <p class="text-gray-600 text-sm">Headlights, bulbs, assemblies</p>
         </div>
         
-        <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="category-card bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
           <div class="part-icon mx-auto">
             <i class="fas fa-tint"></i>
           </div>
@@ -388,7 +580,7 @@
           <p class="text-gray-600 text-sm">Oil, coolant, transmission</p>
         </div>
         
-        <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="category-card bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
           <div class="part-icon mx-auto">
             <i class="fas fa-wind"></i>
           </div>
@@ -396,7 +588,7 @@
           <p class="text-gray-600 text-sm">Compressors, condensers</p>
         </div>
         
-        <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="category-card bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
           <div class="part-icon mx-auto">
             <i class="fas fa-music"></i>
           </div>
@@ -411,137 +603,16 @@
   <section id="shop" class="py-16 bg-white">
     <div class="container mx-auto px-4">
       <div class="text-center mb-16">
-        <h2 class="section-title text-3xl font-bold inline-block">Featured Products</h2>
+        <h2 class="section-title text-3xl font-bold inline-block featured-title">Featured Products</h2>
         <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Top quality parts for your vehicle</p>
       </div>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 fade-in">
-        <!-- Product 1 -->
-        <div class="product-card bg-white rounded-xl shadow-md overflow-hidden">
-          <div class="badge">Best Seller</div>
-          <div class="product-image">
-            <img src="https://images.unsplash.com/photo-1619447997960-4a0c46549a1c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Brake Pads">
-          </div>
-          <div class="p-5">
-            <h3 class="text-lg font-bold mb-1">Premium Brake Pads</h3>
-            <p class="text-gray-600 text-sm mb-3">Fits Toyota Camry 2018-2023</p>
-            <div class="flex justify-between items-center">
-              <p class="text-blue-600 font-bold text-xl">$49.99</p>
-              <button class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg transition">Add to Cart</button>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Product 2 -->
-        <div class="product-card bg-white rounded-xl shadow-md overflow-hidden">
-          <div class="product-image">
-            <img src="https://images.unsplash.com/photo-1606220588914-1a9cc45c0c5b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Air Filter">
-          </div>
-          <div class="p-5">
-            <h3 class="text-lg font-bold mb-1">Performance Air Filter</h3>
-            <p class="text-gray-600 text-sm mb-3">Fits Honda Civic 2015-2021</p>
-            <div class="flex justify-between items-center">
-              <p class="text-blue-600 font-bold text-xl">$32.99</p>
-              <button class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg transition">Add to Cart</button>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Product 3 -->
-        <div class="product-card bg-white rounded-xl shadow-md overflow-hidden">
-          <div class="badge">New</div>
-          <div class="product-image">
-            <img src="https://images.unsplash.com/photo-1563728885574-5756d0e60d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Oil Filter">
-          </div>
-          <div class="p-5">
-            <h3 class="text-lg font-bold mb-1">Synthetic Oil Filter</h3>
-            <p class="text-gray-600 text-sm mb-3">Universal fit for most vehicles</p>
-            <div class="flex justify-between items-center">
-              <p class="text-blue-600 font-bold text-xl">$15.99</p>
-              <button class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg transition">Add to Cart</button>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Product 4 -->
-        <div class="product-card bg-white rounded-xl shadow-md overflow-hidden">
-          <div class="product-image">
-            <img src="https://images.unsplash.com/photo-1591348131719-8c1a7b8f2d7c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Spark Plugs">
-          </div>
-          <div class="p-5">
-            <h3 class="text-lg font-bold mb-1">Iridium Spark Plugs</h3>
-            <p class="text-gray-600 text-sm mb-3">Set of 4 - Improved performance</p>
-            <div class="flex justify-between items-center">
-              <p class="text-blue-600 font-bold text-xl">$39.99</p>
-              <button class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg transition">Add to Cart</button>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Product 5 -->
-        <div class="product-card bg-white rounded-xl shadow-md overflow-hidden">
-          <div class="product-image">
-            <img src="https://images.unsplash.com/photo-1611934189923-8d1d154b36c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Car Battery">
-          </div>
-          <div class="p-5">
-            <h3 class="text-lg font-bold mb-1">Heavy Duty Car Battery</h3>
-            <p class="text-gray-600 text-sm mb-3">850 CCA - 3-year warranty</p>
-            <div class="flex justify-between items-center">
-              <p class="text-blue-600 font-bold text-xl">$129.99</p>
-              <button class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg transition">Add to Cart</button>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Product 6 -->
-        <div class="product-card bg-white rounded-xl shadow-md overflow-hidden">
-          <div class="badge">Sale</div>
-          <div class="product-image">
-            <img src="https://images.unsplash.com/photo-1617806118233-18e1de247200?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Headlight">
-          </div>
-          <div class="p-5">
-            <h3 class="text-lg font-bold mb-1">LED Headlight Kit</h3>
-            <p class="text-gray-600 text-sm mb-3">6000K Bright White - Easy install</p>
-            <div class="flex justify-between items-center">
-              <p class="text-blue-600 font-bold text-xl"><span class="line-through text-gray-400 text-base">$89.99</span> $69.99</p>
-              <button class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg transition">Add to Cart</button>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Product 7 -->
-        <div class="product-card bg-white rounded-xl shadow-md overflow-hidden">
-          <div class="product-image">
-            <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Windshield Wiper">
-          </div>
-          <div class="p-5">
-            <h3 class="text-lg font-bold mb-1">All-Season Wiper Blades</h3>
-            <p class="text-gray-600 text-sm mb-3">Set of 3 - Quiet performance</p>
-            <div class="flex justify-between items-center">
-              <p class="text-blue-600 font-bold text-xl">$34.99</p>
-              <button class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg transition">Add to Cart</button>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Product 8 -->
-        <div class="product-card bg-white rounded-xl shadow-md overflow-hidden">
-          <div class="product-image">
-            <img src="https://images.unsplash.com/photo-1617806118233-18e1de247200?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Alternator">
-          </div>
-          <div class="p-5">
-            <h3 class="text-lg font-bold mb-1">High Output Alternator</h3>
-            <p class="text-gray-600 text-sm mb-3">150A - Direct replacement</p>
-            <div class="flex justify-between items-center">
-              <p class="text-blue-600 font-bold text-xl">$189.99</p>
-              <button class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg transition">Add to Cart</button>
-            </div>
-          </div>
-        </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 fade-in" id="products-grid">
+        <!-- Products will be added here dynamically -->
       </div>
       
       <div class="text-center mt-12 fade-in">
-        <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition transform hover:-translate-y-1">
+        <button id="all-products-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition transform hover:-translate-y-1">
           View All Products <i class="fas fa-arrow-right ml-2"></i>
         </button>
       </div>
@@ -579,12 +650,18 @@
     </div>
   </section>
 
- <!-- Footer -->
-  <footer class="bg-blue-900 text-white py-8">
-    <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+  <!-- Footer -->
+  <footer class="bg-blue-900 text-white py-8" id="contact">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
       <div>
-        <h3 class="text-xl font-bold">AutoParts Pro</h3>
+        <h3 class="text-xl font-bold">Stunes AutoParts</h3>
         <p>Your trusted source for car spare parts.</p>
+        <!-- Added contact information -->
+        <div class="mt-4">
+          <p><i class="fas fa-phone mr-2"></i> +254 712 345 678</p>
+          <p><i class="fas fa-envelope mr-2"></i> info@stunesautoparts.com</p>
+          <p><i class="fas fa-map-marker-alt mr-2"></i> Nairobi, Kenya</p>
+        </div>
       </div>
       <div>
         <h3 class="text-xl font-bold">Quick Links</h3>
@@ -595,16 +672,25 @@
         </ul>
       </div>
       <div>
+        <h3 class="text-xl font-bold">Information</h3>
+        <ul>
+          <li><a href="#" class="hover:text-red-500">About Us</a></li>
+          <li><a href="#" class="hover:text-red-500">Shipping Policy</a></li>
+          <li><a href="#" class="hover:text-red-500">Returns & Refunds</a></li>
+          <li><a href="#" class="hover:text-red-500">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div>
         <h3 class="text-xl font-bold">Stay Connected</h3>
         <div class="flex space-x-4">
-          <i class="fab fa-facebook text-2xl hover:text-red-500 cursor-pointer"></i>
-          <i class="fab fa-twitter text-2xl hover:text-red-500 cursor-pointer"></i>
-          <i class="fab fa-instagram text-2xl hover:text-red-500 cursor-pointer"></i>
+          <a href="#" class="text-white hover:text-red-500"><i class="fab fa-facebook text-2xl"></i></a>
+          <a href="#" class="text-white hover:text-red-500"><i class="fab fa-twitter text-2xl"></i></a>
+          <a href="#" class="text-white hover:text-red-500"><i class="fab fa-instagram text-2xl"></i></a>
         </div>
       </div>
     </div>
     <div class="text-center mt-6">
-      <p>© 2025 Stunes AutoParts </p>
+      <p>© 2025 Stunes AutoParts</p>
     </div>
   </footer>
 
@@ -612,16 +698,334 @@
   <button id="back-to-top" class="fixed bottom-6 right-6 bg-amber-500 text-white p-3 rounded-full shadow-lg back-to-top opacity-0 transform translate-y-4">
     <i class="fas fa-arrow-up"></i>
   </button>
+  
+  <!-- Cart Notification -->
+  <div class="cart-notification" id="cart-notification">
+    <i class="fas fa-check-circle mr-2"></i>
+    <span id="notification-text">Item added to cart!</span>
+  </div>
 
   <script>
+    // Product data with KSH prices
+    const products = [
+      {
+        id: 1,
+        name: "Premium Brake Pads",
+        description: "Fits Toyota Camry 2018-2023",
+        price: 49.99,
+        kshPrice: Math.round(49.99 * 129),
+        image: "https://images.unsplash.com/photo-1619447997960-4a0c46549a1c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+        badge: "Best Seller"
+      },
+      {
+        id: 2,
+        name: "Performance Air Filter",
+        description: "Fits Honda Civic 2015-2021",
+        price: 32.99,
+        kshPrice: Math.round(32.99 * 129),
+        image: "https://images.unsplash.com/photo-1606220588914-1a9cc45c0c5b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+        badge: null
+      },
+      {
+        id: 3,
+        name: "Synthetic Oil Filter",
+        description: "Universal fit for most vehicles",
+        price: 15.99,
+        kshPrice: Math.round(15.99 * 129),
+        image: "https://images.unsplash.com/photo-1563728885574-5756d0e60d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+        badge: "New"
+      },
+      {
+        id: 4,
+        name: "Iridium Spark Plugs",
+        description: "Set of 4 - Improved performance",
+        price: 39.99,
+        kshPrice: Math.round(39.99 * 129),
+        image: "https://images.unsplash.com/photo-1591348131719-8c1a7b8f2d7c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+        badge: null
+      },
+      {
+        id: 5,
+        name: "Heavy Duty Car Battery",
+        description: "850 CCA - 3-year warranty",
+        price: 129.99,
+        kshPrice: Math.round(129.99 * 129),
+        image: "https://images.unsplash.com/photo-1611934189923-8d1d154b36c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+        badge: null
+      },
+      {
+        id: 6,
+        name: "LED Headlight Kit",
+        description: "6000K Bright White - Easy install",
+        price: 69.99,
+        originalPrice: 89.99,
+        kshPrice: Math.round(69.99 * 129),
+        kshOriginalPrice: Math.round(89.99 * 129),
+        image: "https://images.unsplash.com/photo-1617806118233-18e1de247200?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+        badge: "Sale"
+      },
+      {
+        id: 7,
+        name: "All-Season Wiper Blades",
+        description: "Set of 3 - Quiet performance",
+        price: 34.99,
+        kshPrice: Math.round(34.99 * 129),
+        image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+        badge: null
+      },
+      {
+        id: 8,
+        name: "High Output Alternator",
+        description: "150A - Direct replacement",
+        price: 189.99,
+        kshPrice: Math.round(189.99 * 129),
+        image: "https://images.unsplash.com/photo-1617806118233-18e1de247200?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+        badge: null
+      }
+    ];
+
+    // Cart functionality
+    let cart = [];
+    const cartCount = document.getElementById('cart-count');
+    const cartIcon = document.getElementById('cart-icon');
+    const cartModal = document.getElementById('cart-modal');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const closeCart = document.getElementById('close-cart');
+    const cartItems = document.getElementById('cart-items');
+    const emptyCartMessage = document.getElementById('empty-cart-message');
+    const cartSummary = document.getElementById('cart-summary');
+    const cartSubtotal = document.getElementById('cart-subtotal');
+    const cartTotal = document.getElementById('cart-total');
+    const cartNotification = document.getElementById('cart-notification');
+    const notificationText = document.getElementById('notification-text');
+    
+    // Format currency for display
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('en-KE', {
+        style: 'currency',
+        currency: 'KES',
+        minimumFractionDigits: 2
+      }).format(amount);
+    }
+    
+    // Render products with KSH prices
+    function renderProducts(productsToRender) {
+      const productsGrid = document.getElementById('products-grid');
+      productsGrid.innerHTML = '';
+      
+      productsToRender.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.className = 'product-card bg-white rounded-xl shadow-md overflow-hidden';
+        
+        let priceHTML = `
+          <div class="price-ksh">
+            <span>Ksh</span>
+            <span>${formatCurrency(product.kshPrice).replace('KES', '')}</span>
+          </div>
+        `;
+        
+        if (product.originalPrice) {
+          priceHTML = `
+            <div class="price-ksh">
+              <span class="line-through text-gray-400 text-base">
+                ${formatCurrency(product.kshOriginalPrice).replace('KES', '')}
+              </span>
+              <div class="price-ksh">
+                <span>Ksh</span>
+                <span>${formatCurrency(product.kshPrice).replace('KES', '')}</span>
+              </div>
+            </div>
+          `;
+        }
+        
+        productCard.innerHTML = `
+          ${product.badge ? `<div class="badge">${product.badge}</div>` : ''}
+          <div class="product-image">
+            <img src="${product.image}" alt="${product.name}">
+          </div>
+          <div class="p-5">
+            <h3 class="text-lg font-bold mb-1">${product.name}</h3>
+            <p class="text-gray-600 text-sm mb-3">${product.description}</p>
+            <div class="flex justify-between items-center">
+              ${priceHTML}
+              <button class="add-to-cart-btn bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg transition" 
+                      data-id="${product.id}" 
+                      data-name="${product.name}" 
+                      data-price="${product.kshPrice}" 
+                      data-image="${product.image}">
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        `;
+        
+        productsGrid.appendChild(productCard);
+      });
+    }
+    
+    // Render cart items
+    function renderCart() {
+      cartItems.innerHTML = '';
+      
+      if (cart.length === 0) {
+        emptyCartMessage.classList.remove('hidden');
+        cartSummary.classList.add('hidden');
+        return;
+      }
+      
+      emptyCartMessage.classList.add('hidden');
+      cartSummary.classList.remove('hidden');
+      
+      let subtotal = 0;
+      
+      cart.forEach(item => {
+        const cartItem = document.createElement('div');
+        cartItem.className = 'cart-item';
+        cartItem.innerHTML = `
+          <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+          <div class="flex-1">
+            <h4 class="font-bold">${item.name}</h4>
+            <p>${formatCurrency(item.price)}</p>
+            <div class="cart-quantity">
+              <button class="decrease-quantity" data-id="${item.id}">-</button>
+              <input type="number" min="1" value="${item.quantity}" class="item-quantity" data-id="${item.id}">
+              <button class="increase-quantity" data-id="${item.id}">+</button>
+            </div>
+            <div class="remove-item" data-id="${item.id}">Remove</div>
+          </div>
+        `;
+        
+        cartItems.appendChild(cartItem);
+        subtotal += item.price * item.quantity;
+      });
+      
+      const shipping = 500;
+      const total = subtotal + shipping;
+      
+      cartSubtotal.textContent = formatCurrency(subtotal);
+      cartTotal.textContent = formatCurrency(total);
+    }
+    
+    // Update cart count
+    function updateCartCount() {
+      const count = cart.reduce((total, item) => total + item.quantity, 0);
+      cartCount.textContent = count;
+    }
+    
+    // Add to cart
+    function addToCart(productId, productName, productPrice, productImage) {
+      const existingItem = cart.find(item => item.id === productId);
+      
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({
+          id: productId,
+          name: productName,
+          price: productPrice,
+          image: productImage,
+          quantity: 1
+        });
+      }
+      
+      updateCartCount();
+      renderCart();
+      
+      // Show notification
+      notificationText.textContent = `${productName} added to cart!`;
+      cartNotification.classList.add('show');
+      
+      setTimeout(() => {
+        cartNotification.classList.remove('show');
+      }, 3000);
+    }
+    
+    // Initialize products
+    renderProducts(products);
+    
+    // Event listeners
+    document.addEventListener('click', function(e) {
+      // Add to cart button
+      if (e.target.classList.contains('add-to-cart-btn')) {
+        const productId = parseInt(e.target.dataset.id);
+        const productName = e.target.dataset.name;
+        const productPrice = parseFloat(e.target.dataset.price);
+        const productImage = e.target.dataset.image;
+        
+        addToCart(productId, productName, productPrice, productImage);
+      }
+      
+      // Cart icon
+      if (e.target.closest('#cart-icon')) {
+        cartModal.classList.add('open');
+        cartOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      // Close cart
+      if (e.target.closest('#close-cart') || e.target === cartOverlay) {
+        cartModal.classList.remove('open');
+        cartOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+      
+      // Increase quantity
+      if (e.target.classList.contains('increase-quantity')) {
+        const itemId = parseInt(e.target.dataset.id);
+        const item = cart.find(item => item.id === itemId);
+        if (item) {
+          item.quantity += 1;
+          renderCart();
+          updateCartCount();
+        }
+      }
+      
+      // Decrease quantity
+      if (e.target.classList.contains('decrease-quantity')) {
+        const itemId = parseInt(e.target.dataset.id);
+        const item = cart.find(item => item.id === itemId);
+        if (item && item.quantity > 1) {
+          item.quantity -= 1;
+          renderCart();
+          updateCartCount();
+        }
+      }
+      
+      // Remove item
+      if (e.target.classList.contains('remove-item')) {
+        const itemId = parseInt(e.target.dataset.id);
+        cart = cart.filter(item => item.id !== itemId);
+        renderCart();
+        updateCartCount();
+      }
+      
+      // Quantity input change
+      if (e.target.classList.contains('item-quantity')) {
+        const itemId = parseInt(e.target.dataset.id);
+        const item = cart.find(item => item.id === itemId);
+        if (item) {
+          const newQuantity = parseInt(e.target.value);
+          if (newQuantity > 0) {
+            item.quantity = newQuantity;
+          } else {
+            item.quantity = 1;
+            e.target.value = 1;
+          }
+          renderCart();
+          updateCartCount();
+        }
+      }
+    });
+    
     // Mobile Menu Toggle
     function toggleMenu() {
       const menu = document.getElementById('mobile-menu');
       menu.classList.toggle('hidden');
     }
 
-    // Search Autocomplete
+    // Search Functionality
     const searchInput = document.getElementById('search');
+    const searchBtn = document.getElementById('search-btn');
     const suggestionsDiv = document.getElementById('suggestions');
     const parts = [
       'Brake Pads', 'Oil Filter', 'Spark Plugs', 'Air Filter', 'Alternator', 
@@ -636,26 +1040,50 @@
       'Steering Rack', 'Ball Joint', 'Wheel Hub', 'Tire Pressure Sensor'
     ];
 
+    // Show suggestions when typing
     searchInput.addEventListener('input', () => {
       const value = searchInput.value.toLowerCase();
-      const matches = parts.filter(part => part.toLowerCase().includes(value));
-      
-      if (value && matches.length > 0) {
+      if (value.length > 0) {
+        const matches = parts.filter(part => part.toLowerCase().includes(value));
         suggestionsDiv.innerHTML = matches.map(match => 
-          `<div class="suggestion-item p-3 border-b border-gray-100 last:border-b-0">${match}</div>`
+          `<div class="suggestion-item p-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-100">${match}</div>`
         ).join('');
         suggestionsDiv.classList.remove('hidden');
       } else {
-        suggestionsDiv.innerHTML = '';
         suggestionsDiv.classList.add('hidden');
       }
     });
 
-    // Close suggestions when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('#search') && !e.target.closest('#suggestions')) {
-        suggestionsDiv.innerHTML = '';
+    // Handle suggestion selection
+    suggestionsDiv.addEventListener('click', (e) => {
+      if (e.target.classList.contains('suggestion-item')) {
+        searchInput.value = e.target.textContent;
         suggestionsDiv.classList.add('hidden');
+        performSearch();
+      }
+    });
+
+    // Handle search button click
+    searchBtn.addEventListener('click', performSearch);
+
+    // Perform search function
+    function performSearch() {
+      const searchTerm = searchInput.value.trim();
+      if (searchTerm) {
+        // Filter products by search term
+        const filteredProducts = products.filter(product => 
+          product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+          product.description.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        
+        renderProducts(filteredProducts);
+      }
+    }
+
+    // Handle Enter key in search
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        performSearch();
       }
     });
 
@@ -678,6 +1106,7 @@
     const makeSelect = document.getElementById('make');
     const modelSelect = document.getElementById('model');
     const yearSelect = document.getElementById('year');
+    const findPartsBtn = document.getElementById('find-parts-btn');
     
     // Populate years
     yearSelect.innerHTML = '<option value="">Select Year</option>' + 
@@ -688,6 +1117,20 @@
       const models = makes[makeSelect.value] || [];
       modelSelect.innerHTML = '<option value="">Select Model</option>' + 
         models.map(model => `<option value="${model}">${model}</option>`).join('');
+    });
+    
+    // Find parts functionality
+    findPartsBtn.addEventListener('click', () => {
+      const make = makeSelect.value;
+      const model = modelSelect.value;
+      const year = yearSelect.value;
+      
+      if (make && model && year) {
+        alert(`Finding parts for: ${year} ${make} ${model}`);
+        // In a real application, this would filter products
+      } else {
+        alert('Please select make, model, and year');
+      }
     });
     
     // Back to Top Button
@@ -741,6 +1184,43 @@
           el.classList.add('appear');
         }, index * 300);
       });
+    });
+    
+    // "View All Products" button functionality
+    const allProductsBtn = document.getElementById('all-products-btn');
+    let showingAllProducts = false;
+    
+    allProductsBtn.addEventListener('click', () => {
+      if (!showingAllProducts) {
+        // Create additional products (duplicates for demo)
+        const additionalProducts = [];
+        for (let i = 0; i < 8; i++) {
+          const original = products[i % products.length];
+          const newProduct = {...original, id: original.id + i * 10};
+          additionalProducts.push(newProduct);
+        }
+        
+        renderProducts([...products, ...additionalProducts]);
+        allProductsBtn.textContent = 'Show Featured Products';
+        showingAllProducts = true;
+      } else {
+        renderProducts(products);
+        allProductsBtn.textContent = 'View All Products';
+        showingAllProducts = false;
+      }
+      
+      // Scroll to products section
+      document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
+    });
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileToggle = document.querySelector('.fa-bars').parentElement;
+      
+      if (!mobileMenu.contains(e.target) && !mobileToggle.contains(e.target) && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+      }
     });
   </script>
 </body>
